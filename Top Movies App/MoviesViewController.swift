@@ -51,13 +51,19 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
         let title = movie["title"] as! String
         let overview = movie["overview"] as! String
         
+        //safer code if poster not found it cannot be assigned to nil
         let baseURL = "https://image.tmdb.org/t/p/w342"
-        let posterPath = movie["poster_path"] as! String
-        let imageURL = NSURL(string: baseURL + posterPath)
-        
+        if let posterPath = movie["poster_path"] as? String{
+            let imageURL = NSURL(string: baseURL + posterPath)
+            cell.posterView.setImageWithURL(imageURL!)
+        }
+        // this will be the pic placeholder if not found
+        else{
+            let imageURL =  NSURL(string: "https://cdn.shopify.com/s/files/1/0972/6232/files/no-image-placeholder.png")
+            cell.posterView.setImageWithURL(imageURL!)
+        }
         cell.titleLabel.text = title
         cell.overviewLabel.text = overview
-        cell.posterView.setImageWithURL(imageURL!)
         
         return cell
     }
@@ -111,14 +117,23 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
         
     }
 
-    /*
+    
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        
+        
+        let cell = sender as! UITableViewCell
+        let indexPath = tableView.indexPathForCell(cell)
+        let movie = movies![indexPath!.row]
+        
+        let detailViewController = segue.destinationViewController as! DetailViewController
+        detailViewController.movie = movie
+        
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
     }
-    */
+    
 
 }
