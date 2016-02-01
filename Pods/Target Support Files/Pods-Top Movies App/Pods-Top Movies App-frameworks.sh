@@ -85,7 +85,9 @@ strip_invalid_archs() {
 
 if [[ "$CONFIGURATION" == "Debug" ]]; then
   install_framework "Pods-Top Movies App/AFNetworking.framework"
+  install_framework "Pods-Top Movies App/MBProgressHUD.framework"
 fi
 if [[ "$CONFIGURATION" == "Release" ]]; then
   install_framework "Pods-Top Movies App/AFNetworking.framework"
+  install_framework "Pods-Top Movies App/MBProgressHUD.framework"
 fi

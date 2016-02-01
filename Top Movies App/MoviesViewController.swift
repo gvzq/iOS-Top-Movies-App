@@ -8,6 +8,7 @@
 
 import UIKit
 import AFNetworking
+import MBProgressHUD
 
 class MoviesViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
 
@@ -17,31 +18,16 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        //Implement pull to refresh functionality
+        let refreshControl = UIRefreshControl()
+        refreshControl.addTarget(self, action: "refreshControlAction:", forControlEvents: UIControlEvents.ValueChanged)
+        tableView.insertSubview(refreshControl, atIndex: 0)
+        
         tableView.dataSource = self
         tableView.delegate = self
         
-        let apiKey = "a07e22bc18f5cb106bfe4cc1f83ad8ed"
-        let url = NSURL(string:"https://api.themoviedb.org/3/movie/now_playing?api_key=\(apiKey)")
-        let request = NSURLRequest(URL: url!)
-        let session = NSURLSession(
-            configuration: NSURLSessionConfiguration.defaultSessionConfiguration(),
-            delegate:nil,
-            delegateQueue:NSOperationQueue.mainQueue()
-        )
-        
-        let task : NSURLSessionDataTask = session.dataTaskWithRequest(request,
-            completionHandler: { (dataOrNil, response, error) in
-                if let data = dataOrNil {
-                    if let responseDictionary = try! NSJSONSerialization.JSONObjectWithData(
-                        data, options:[]) as? NSDictionary {
-                            NSLog("response: \(responseDictionary)")
-                            
-                            self.movies = responseDictionary["results"] as? [NSDictionary]
-                            self.tableView.reloadData()
-                    }
-                }
-        });
-        task.resume()
+        //Get movie information
+        loadDataFromNetwork()
     }
 
     override func didReceiveMemoryWarning() {
@@ -76,6 +62,54 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
         return cell
     }
     
+    func loadDataFromNetwork() {
+        let apiKey = "a07e22bc18f5cb106bfe4cc1f83ad8ed"
+        let url = NSURL(string: "https://api.themoviedb.org/3/movie/now_playing?api_key=\(apiKey)")
+        let request = NSURLRequest(
+            URL: url!,
+            cachePolicy: NSURLRequestCachePolicy.ReloadIgnoringLocalCacheData,
+            timeoutInterval: 10)
+        
+        let session = NSURLSession(
+            configuration: NSURLSessionConfiguration.defaultSessionConfiguration(),
+            delegate: nil,
+            delegateQueue: NSOperationQueue.mainQueue()
+        )
+        
+        //Show HUD before the request is made
+        let HUDindicator = MBProgressHUD.showHUDAddedTo(self.view, animated: true)
+        HUDindicator.labelText = "Loading"
+        HUDindicator.detailsLabelText = "Please wait"
+        
+        let task: NSURLSessionDataTask = session.dataTaskWithRequest(request,
+            completionHandler: { (dataOrNil, response, error) in
+                if let data = dataOrNil {
+                    if let responseDictionary = try! NSJSONSerialization.JSONObjectWithData(
+                        data, options:[]) as? NSDictionary {
+                            print("response: \(responseDictionary)")
+                            
+                            //Hide HUD after request is done
+                            HUDindicator.hide(true)
+                            
+                            self.movies = responseDictionary["results"] as? [NSDictionary]
+                            self.tableView.reloadData()
+                    }
+                }
+        })
+        task.resume()
+    }
+    
+    // Function to implement pull to refresh functionality.
+    func refreshControlAction(refreshControl: UIRefreshControl) {
+        //Reload table with new data
+        self.tableView.reloadData()
+        
+        loadDataFromNetwork()
+        
+        //Stop the refresh control spinner
+        refreshControl.endRefreshing()
+        
+    }
 
     /*
     // MARK: - Navigation

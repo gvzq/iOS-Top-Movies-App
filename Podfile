@@ -4,7 +4,8 @@
 use_frameworks!
 
 target 'Top Movies App' do
-    pod 'AFNetworking'
+pod 'AFNetworking'
+pod 'MBProgressHUD'
 end
 
 target 'Top Movies AppTests' do
