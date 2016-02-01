@@ -1,5 +1,5 @@
-# iOS-Top-Movies-App
-# Project 1
+# iOS
+# Project 1 - *Top Movies App*
 
 **Top Movies App** is a movies app using the [The Movie Database API](http://docs.themoviedb.apiary.io/#).
 
