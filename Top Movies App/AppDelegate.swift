@@ -18,26 +18,30 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Override point for customization after application launch.
         
         //reference to main screen
-        //window = UIWindow(frame: UIScreen.mainScreen().bounds)
+        window = UIWindow(frame: UIScreen.mainScreen().bounds)
         
         //refrence storyboard
-//        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-//        
-//        let nowPlayingNavigationController = storyboard.instantiateViewControllerWithIdentifier("MoviesNavigationController") as! UINavigationController
-//        let nowPlatingViewConroller = nowPlayingNavigationController.topViewController as! MoviesViewController
-//        nowPlatingViewConroller.endpoint = "now_playing"
-//        nowPlatingViewConroller.tabBarItem.title = "Now Playing"
-//        
-//        let topRatedgNavigationController = storyboard.instantiateViewControllerWithIdentifier("MoviesNavigationController") as! UINavigationController
-//        let topRatedViewConroller = topRatedgNavigationController.topViewController as! MoviesViewController
-//        topRatedViewConroller.endpoint = "top_rated"
-//        topRatedViewConroller.tabBarItem.title = "Top Rated"
-//        
-//        let tabBarController = UITabBarController()
-//        tabBarController.viewControllers = [nowPlatingViewConroller, topRatedgNavigationController]
-//        
-//        window?.rootViewController = tabBarController
-//        window?.makeKeyAndVisible()
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        
+        let nowPlayingNavigationController = storyboard.instantiateViewControllerWithIdentifier("MoviesNavigationController") as! UINavigationController
+        let nowPlatingViewConroller = nowPlayingNavigationController.topViewController as! MoviesViewController
+        //endpoint for controller & name in tabbar
+        nowPlatingViewConroller.endpoint = "now_playing"
+        nowPlayingNavigationController.tabBarItem.title = "Now Playing"
+        //nowPlayingNavigationController.tabBarItem.image = UIImage(named: "now_playing")
+        
+        let topRatedNavigationController = storyboard.instantiateViewControllerWithIdentifier("MoviesNavigationController") as! UINavigationController
+        let topRatedViewConroller = topRatedNavigationController.topViewController as! MoviesViewController
+        //endpoint for controller & name in tabbar
+        topRatedViewConroller.endpoint = "top_rated"
+        topRatedNavigationController.tabBarItem.title = "Top Rated"
+        //topRatedNavigationController.tabBarItem.image = UIImage(named: "top_rated")
+        
+        let tabBarController = UITabBarController()
+        tabBarController.viewControllers = [nowPlayingNavigationController, topRatedNavigationController]
+        
+        window?.rootViewController = tabBarController
+        window?.makeKeyAndVisible()
         
         return true
     }
