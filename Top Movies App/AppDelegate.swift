@@ -7,6 +7,8 @@
 //
 
 import UIKit
+import Google_Material_Design_Icons_Swift
+import FontAwesome_swift
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -28,14 +30,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         //endpoint for controller & name in tabbar
         nowPlatingViewConroller.endpoint = "now_playing"
         nowPlayingNavigationController.tabBarItem.title = "Now Playing"
-        //nowPlayingNavigationController.tabBarItem.image = UIImage(named: "now_playing")
+        nowPlayingNavigationController.tabBarItem.image = UIImage.fontAwesomeIconWithName(.Film, textColor: UIColor.blackColor(), size: CGSizeMake(30, 30))
         
         let topRatedNavigationController = storyboard.instantiateViewControllerWithIdentifier("MoviesNavigationController") as! UINavigationController
         let topRatedViewConroller = topRatedNavigationController.topViewController as! MoviesViewController
         //endpoint for controller & name in tabbar
         topRatedViewConroller.endpoint = "top_rated"
         topRatedNavigationController.tabBarItem.title = "Top Rated"
-        //topRatedNavigationController.tabBarItem.image = UIImage(named: "top_rated")
+        topRatedNavigationController.tabBarItem.image = UIImage.fontAwesomeIconWithName(.ThumbsOUp, textColor: UIColor.blackColor(), size: CGSizeMake(30, 30))
         
         let tabBarController = UITabBarController()
         tabBarController.viewControllers = [nowPlayingNavigationController, topRatedNavigationController]

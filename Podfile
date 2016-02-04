@@ -6,6 +6,9 @@ use_frameworks!
 target 'Top Movies App' do
 pod 'AFNetworking'
 pod 'MBProgressHUD'
+
+pod 'Google-Material-Design-Icons-Swift', '~> 1.0.1'
+pod 'FontAwesome.swift'
 end
 
 target 'Top Movies AppTests' do
